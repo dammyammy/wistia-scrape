@@ -59,11 +59,34 @@ input:focus, textarea:focus {
     outline-width: 2px;
   }
 
-  .card {
-    border: 2px solid hsla(230,84%,63%,1);
-  }
+.card {
+  border: 2px solid hsla(230,84%,63%,0.4);
+  border-radius: 4px;
+}
+
 .card, .card-buttons {
     display: flex;
+}
+
+.card-image {
+    flex: 1;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.card-body {
+    flex: 2
+}
+
+.card-buttons {
+    display: flex;
+    border-radius: 4px;
+    padding: 10px 0;
+}
+
+.card-buttons > button {
+    border-radius: 4px !important;
+    margin-right: 10px;
 }
 
 #loading {
