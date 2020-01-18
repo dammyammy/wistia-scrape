@@ -6,7 +6,7 @@ body {
 }
 
 a {
-    color: #D33257;
+    color: hsla(230,84%,63%,1);
     text-decoration: none;
 }
 
@@ -29,15 +29,16 @@ form {
 }
 
 input,
+textarea,
 button {
     font: inherit;
     line-height: 1;
     padding: 15px 10px;
 }
 
-input {
+input, textarea {
     width: 100%;
-    border: 2px solid #D33257;
+    border: 2px solid hsla(230,84%,63%,1);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
@@ -45,7 +46,7 @@ input {
 button {
     font-size: 14px;
     font-weight: 600;
-    background-color: #D33257;
+    background-color: hsla(230,84%,63%,1);
     color: #fff;
     border: 0;
 
