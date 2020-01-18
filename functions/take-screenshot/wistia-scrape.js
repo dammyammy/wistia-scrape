@@ -43,8 +43,10 @@ exports.handler = async (event, context) => {
     url = (valueTxt.substring(valueTxt.indexOf('"url":"') + 1, valueTxt.indexOf('.bin"')) + '.mp4')
             .replace('url":"', '');
 
+
+
     if(url === '.mp4') {
-        const value2 = await el.getProperty('textContent');
+        const value2 = await el2.getProperty('textContent');
 
         let valueTxt2 = await value2.jsonValue();
 
