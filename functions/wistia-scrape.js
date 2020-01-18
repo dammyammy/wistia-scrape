@@ -1,25 +1,26 @@
 const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core')
+// const puppeteer = require('puppeteer-core')
 
 exports.handler = async (event, context) => {
 
-    const text = JSON.parse(event.body).text;
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify({ text })
-    }
-
-    console.log(text)
+    const element = JSON.parse(event.body).text;
 
     if (!text) return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Link not defined' })
     }
 
-    let link = extractWistiaURL(text);
+    // let link = extractWistiaURL(text);
 
-    const browser = await puppeteer.launch({ //chromium
+    let imgRegex = /<img[^>]+src="http([^">]+)/g;
+    
+    let video = {
+      title: element.substring(element.lastIndexOf('">') + 1, element.lastIndexOf('</a></p>')).replace('>', ''),
+      image: imgRegex.exec(element)[0].replace('<img src="', ''),
+      embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
+    };
+
+    const browser = await chromium.puppeteer.launch({ //
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath,
@@ -28,7 +29,7 @@ exports.handler = async (event, context) => {
 
     const page = await browser.newPage();
 
-    await page.goto(link.embedUrl, { waitUntil: ["domcontentloaded", 'networkidle2'] })
+    await page.goto(video.embedUrl, { waitUntil: ["domcontentloaded", 'networkidle2'] })
 
     const [el] = await page.$x('/html/body/script[4]');
   
@@ -36,26 +37,24 @@ exports.handler = async (event, context) => {
 
     let valueTxt = await value.jsonValue();
 
-    url = (valueTxt.substring(valueTxt.indexOf('"url":"') + 1, valueTxt.indexOf('.bin"')) + '.mp4')
+    let url = (valueTxt.substring(valueTxt.indexOf('"url":"') + 1, valueTxt.indexOf('.bin"')) + '.mp4')
             .replace('url":"', '');
 
     await browser.close();
 
     return {
         statusCode: 200,
-        body: JSON.stringify({ ...link, url })
+        body: JSON.stringify({ ...video, url })
     }
 }
 
 
-function extractWistiaURL(link) {
-    let imgRegex = /<img[^>]+src="http([^">]+)/g;
-
-    console.log(link)
+// function extractWistiaURL(link) {
+//     let imgRegex = /<img[^>]+src="http([^">]+)/g;
     
-    return {
-      title: link.substring(link.lastIndexOf('">') + 1, link.lastIndexOf('</a></p>')).replace('>', ''),
-      image: imgRegex.exec(link)[0].replace('<img src="', ''),
-      embedUrl: "https://fast.wistia.net/embed/iframe/" +link.substring(link.indexOf('?wvideo=') + 1, link.indexOf('">')).replace('wvideo=', '')
-    };
-}    
+//     return {
+//       title: link.substring(link.lastIndexOf('">') + 1, link.lastIndexOf('</a></p>')).replace('>', ''),
+//       image: imgRegex.exec(link)[0].replace('<img src="', ''),
+//       embedUrl: "https://fast.wistia.net/embed/iframe/" +link.substring(link.indexOf('?wvideo=') + 1, link.indexOf('">')).replace('wvideo=', '')
+//     };
+// }    
