@@ -19,6 +19,8 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
         .then((res) => {
 
 
+            console.log(res)
+
 
 
             
@@ -29,7 +31,7 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
             document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(res) + '</pre>' ;
         })
         .catch((err) => {
-            // console.log(err)
-            // document.getElementById('result').textContent = `Error: ${err.toString()}`
+            console.log(err)
+            document.getElementById('result').textContent = `Error: ${err.toString()}`
         });
 });

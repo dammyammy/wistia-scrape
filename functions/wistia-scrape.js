@@ -1,24 +1,25 @@
 const chromium = require('chrome-aws-lambda');
 
-
-function extractWistiaURL(link) {
-    let imgRegex = /<img[^>]+src="http([^">]+)/g;
-    
-    return {
-      title: link.substring(link.lastIndexOf('">') + 1, link.lastIndexOf('</a></p>')).replace('>', ''),
-      image: imgRegex.exec(link)[0].replace('<img src="', ''),
-      embedUrl: "https://fast.wistia.net/embed/iframe/" +link.substring(link.indexOf('?wvideo=') + 1, link.indexOf('">')).replace('wvideo=', '')
-    };
-}
-
 exports.handler = async (event, context) => {
 
     const text = JSON.parse(event.body).text;
+
+    console.log(text)
 
     if (!text) return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Link not defined' })
     }
+
+    function extractWistiaURL(link) {
+        let imgRegex = /<img[^>]+src="http([^">]+)/g;
+        
+        return {
+          title: link.substring(link.lastIndexOf('">') + 1, link.lastIndexOf('</a></p>')).replace('>', ''),
+          image: imgRegex.exec(link)[0].replace('<img src="', ''),
+          embedUrl: "https://fast.wistia.net/embed/iframe/" +link.substring(link.indexOf('?wvideo=') + 1, link.indexOf('">')).replace('wvideo=', '')
+        };
+    }    
 
     let link = extractWistiaURL(text);
 
@@ -49,3 +50,4 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ ...link, url })
     }
 }
+
