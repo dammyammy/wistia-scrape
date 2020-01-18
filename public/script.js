@@ -14,15 +14,13 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
         body: JSON.stringify({ text: text })
     };
 
-    console.log(options)
+    document.getElementById("loading").style.display = 'block';
 
-    document.getElementById('result').textContent = "Please wait..."
 
     fetch("/.netlify/functions/wistia-scrape", options)
         .then((res) => res.json())
         .then((res) => {
 
-            
             console.log(res)
 
             let card = `<div class="card">
@@ -37,15 +35,11 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
                     </div>
                 </div>
             </div>`;
-
-
-
             
-            // if (!res.buffer) return document.getElementById('result').textContent = 'Error capturing screenshot';
 
-            // const img = document.createElement('img');
-            // img.src = bufferToImageUrl(res.buffer.data);
-            document.getElementById('result').append(card);
+            document.getElementById("loading").style.display = 'none';
+
+            document.getElementById('result').insertAdjacentHTML('beforeend', card);
         })
         .catch((err) => {
             console.log(err)

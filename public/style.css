@@ -63,3 +63,6 @@ input:focus, textarea:focus {
     display: flex;
 }
 
+#loading {
+    margin-bottom: 20px;
+}
