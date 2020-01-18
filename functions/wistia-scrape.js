@@ -14,11 +14,11 @@ exports.handler = async (event, context) => {
 
         // let link = extractWistiaURL(text);
 
-        const imgRegex = /<img[^>]+src="http([^">]+)/g;
+        const imgRegex = /<img[^>]+src="([^">]+)/;
         
         let video = {
             title: element.substring(element.lastIndexOf('">') + 1, element.lastIndexOf('</a></p>')).replace('>', ''),
-            //   image: imgRegex.exec(element)[0].replace('<img src="', ''),
+              image: imgRegex.exec(element) !== null? imgRegex.exec(element)[2] : null,
             embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
         };
 
