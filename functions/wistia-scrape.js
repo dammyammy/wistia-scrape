@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
         let url = (valueTxt.substring(valueTxt.indexOf('"url":"') + 1, valueTxt.indexOf('.bin"')) + '.mp4')
                 .replace('url":"', '');
 
-        result = { ...video, url }
+        result = { ...video, url, valueTxt }
 
         // context.succeed(result);
 
