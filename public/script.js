@@ -12,6 +12,8 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
         body: JSON.stringify({ text: text })
     };
 
+    console.log(options)
+
     document.getElementById('result').textContent = "Please wait..."
 
     fetch("/.netlify/functions/wistia-scrape", options)
