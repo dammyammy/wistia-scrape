@@ -16,13 +16,13 @@ exports.handler = async (event, context) => {
     
     let video = {
       title: element.substring(element.lastIndexOf('">') + 1, element.lastIndexOf('</a></p>')).replace('>', ''),
-      image: imgRegex.exec(element)[0].replace('<img src="', ''),
+    //   image: imgRegex.exec(element)[0].replace('<img src="', ''),
       embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
     };
 
     return {
         statusCode: 200,
-        body: JSON.stringify({ ...video })
+        body: JSON.stringify({ ...element, ...video })
     }
 
 

@@ -4,6 +4,7 @@
   "description": "",
   "main": "wistia-scrape.js",
   "scripts": {
+    "deploy": "git add . && git commit -m 'update' && git push",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
