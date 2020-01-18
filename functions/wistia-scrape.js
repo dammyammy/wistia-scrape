@@ -20,6 +20,13 @@ exports.handler = async (event, context) => {
       embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
     };
 
+    return {
+        statusCode: 200,
+        body: JSON.stringify({ ...video })
+    }
+
+
+
     const browser = await chromium.puppeteer.launch({ //
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
