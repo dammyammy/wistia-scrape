@@ -1,5 +1,7 @@
 autosize(document.getElementById('text'));
 
+let key = 1;
+
 document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
 
     e.preventDefault();
@@ -23,15 +25,16 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
 
             console.log(res)
 
-            let card = `<div class="card">
+
+            let card = `<div class="card" id="wistia-video-${key}">
                 <div class="card-image">
-                    <img src="${res.image}" alt="${res.title}">
+                    <img src="${res.image}" alt="${res.title}" width="200">
                 </div>
                 <div class="card-body">
-                    <h1>${res.title}</h1>
+                    <p>${res.title}</p>
                     <div class="card-buttons">
-                        <button type="button" onclick="${downloadVideo(res.url)}">Download</button>
-                        <button type="button" onclick="${copyEmbed(res.embedUrl)}">Copy Embed</button>
+                        <button type="button" data-url="${res.url}">Download</button>
+                        <button type="button" data-url="${res.embedUrl}">Copy Embed</button>
                     </div>
                 </div>
             </div>`;
@@ -40,6 +43,13 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
             document.getElementById("loading").style.display = 'none';
 
             document.getElementById('result').insertAdjacentHTML('beforeend', card);
+
+            let buttons = document.querySelectorAll('#wistia-video-' +key + ' button');
+
+            buttons[0].addEventListener('click', () => downloadVideo(buttons[0].getAttribute('data-url')))
+            buttons[1].addEventListener('click', () => copyEmbed(buttons[1].getAttribute('data-url')))
+
+            key++
         })
         .catch((err) => {
             console.log(err)

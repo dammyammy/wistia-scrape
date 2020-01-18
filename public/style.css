@@ -59,6 +59,9 @@ input:focus, textarea:focus {
     outline-width: 2px;
   }
 
+  .card {
+    border: 2px solid hsla(230,84%,63%,1);
+  }
 .card, .card-buttons {
     display: flex;
 }
