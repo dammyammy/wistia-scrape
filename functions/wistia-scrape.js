@@ -63,7 +63,7 @@ exports.handler = async (event, context) => {
         }
 
     } catch (error) {
-        // return context.fail(error);
+        return context.fail(error);
 
         return {
             statusCode: 400,
