@@ -1,4 +1,5 @@
 const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core')
 
 exports.handler = async (event, context) => {
 
@@ -23,7 +24,7 @@ exports.handler = async (event, context) => {
 
     let link = extractWistiaURL(text);
 
-    const browser = await chromium.puppeteer.launch({
+    const browser = await puppeteer.launch({ //chromium
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath,
@@ -32,7 +33,7 @@ exports.handler = async (event, context) => {
 
     const page = await browser.newPage();
 
-    await page.goto(link.embedUrl, { waitUntil: 'networkidle2' })
+    await page.goto(link.embedUrl, { waitUntil: ["domcontentloaded", 'networkidle2'] })
 
     const [el] = await page.$x('/html/body/script[4]');
   
