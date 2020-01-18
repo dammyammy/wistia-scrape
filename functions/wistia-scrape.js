@@ -5,7 +5,7 @@ exports.handler = async (event, context) => {
 
     const element = JSON.parse(event.body).text;
 
-    if (!text) return {
+    if (!element) return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Link not defined' })
     }
