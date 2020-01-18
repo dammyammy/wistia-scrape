@@ -5,6 +5,11 @@ exports.handler = async (event, context) => {
 
     const text = JSON.parse(event.body).text;
 
+    return {
+        statusCode: 200,
+        body: JSON.stringify({ text })
+    }
+
     console.log(text)
 
     if (!text) return {
