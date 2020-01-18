@@ -17,9 +17,9 @@ exports.handler = async (event, context) => {
         const imgRegex = /<img[^>]+src="http([^">]+)/g;
         
         let video = {
-        title: element.substring(element.lastIndexOf('">') + 1, element.lastIndexOf('</a></p>')).replace('>', ''),
-        //   image: imgRegex.exec(element)[0].replace('<img src="', ''),
-        embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
+            title: element.substring(element.lastIndexOf('">') + 1, element.lastIndexOf('</a></p>')).replace('>', ''),
+            //   image: imgRegex.exec(element)[0].replace('<img src="', ''),
+            embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
         };
 
         const browser = await chromium.puppeteer.launch({ // chromium
@@ -44,15 +44,20 @@ exports.handler = async (event, context) => {
 
         result = { ...video, url }
 
-        context.succeed(result);
+        // context.succeed(result);
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ ...video, url })
+            body: JSON.stringify(result)
         }
 
     } catch (error) {
-        return context.fail(error);
+        // return context.fail(error);
+
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'Link not defined' })
+        }
     } finally {
         if (browser !== null) {
             await browser.close();
