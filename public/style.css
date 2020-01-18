@@ -62,6 +62,7 @@ input:focus, textarea:focus {
 .card {
   border: 2px solid hsla(230,84%,63%,0.4);
   border-radius: 4px;
+  margin-bottom: 16px;
 }
 
 .card, .card-buttons {

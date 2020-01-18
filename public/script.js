@@ -48,8 +48,8 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
 
             let buttons = document.querySelectorAll('#wistia-video-' +key + ' button');
 
-            buttons[0].addEventListener('click', () => downloadVideo(buttons[0].getAttribute('data-url')))
-            buttons[1].addEventListener('click', () => copyEmbed(buttons[1].getAttribute('data-url')))
+            buttons[0].addEventListener('click', () => downloadVideo(res.url, res.title))
+            buttons[1].addEventListener('click', () => copyEmbed(res.embedUrl))
 
             key++
         })
@@ -59,10 +59,96 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
         });
 });
 
-function downloadVideo(url) {
+function downloadVideo(url, title) {
     console.log('Downloading ' + url)
+
+    saveURLFile(url, createSlug(title) + '.mp4', 'video/mp4')
 }
 
 function copyEmbed(url) {
-    console.log('Copied embed code to clipboard' + url)
+
+    if('clipboard' in window.navigator) {
+        window.navigator.clipboard.writeText(url)
+
+        alert('Copied embed code to clipboard ' + url);
+
+        return;
+    }
+
+    alert('Error copying to clipboard');
+}
+
+
+async function saveURLFile(url, filename, mimeType, bom) {
+
+    let blob = await urlToBlob(url, mimeType, bom);
+
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+        // IE workaround for "HTML7007: One or more blob URLs were
+        // revoked by closing the blob for which they were created.
+        // These URLs will no longer resolve as the data backing
+        // the URL has been freed."
+        window.navigator.msSaveBlob(blob, filename);
+    }
+    else {
+        let blobURL = window.URL.createObjectURL(blob);
+        let tempLink = document.createElement('a');
+        tempLink.style.display = 'none';
+        tempLink.href = blobURL;
+        tempLink.setAttribute('download', filename);
+
+        // Safari thinks _blank anchor are pop ups. We only want to set _blank
+        // target if the browser does not support the HTML5 download attribute.
+        // This allows you to download files in desktop safari if pop up blocking
+        // is enabled.
+        if (typeof tempLink.download === 'undefined') {
+            tempLink.setAttribute('target', '_blank');
+        }
+
+        document.body.appendChild(tempLink);
+        tempLink.click();
+
+        // Fixes "webkit blob resource error 1"
+        setTimeout(function() {
+            document.body.removeChild(tempLink);
+            window.URL.revokeObjectURL(blobURL);
+        }, 0)
+    }
+}
+
+async function urlToBlob(url, mimeType, bom = undefined) {
+    let {data} = await axios({
+        url,
+        method: 'GET',
+        responseType: 'blob', // important
+    });
+
+    return new Blob(
+        (typeof bom !== 'undefined') ? [bom, data] : [data],
+        { type: mimeType || 'application/octet-stream' }
+    );
+}
+
+
+function createSlug(str) {
+    str = str.replace(/^\s+|\s+$/g, ""); // trim
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    const from = "åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    const to = "aaaaaaeeeeiiiioooouuuunc------";
+
+    let i = 0, l = from.length;
+    for (; i < l; i++) {
+        str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+    }
+
+    str = str
+        .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+        .replace(/\s+/g, "-") // collapse whitespace and replace by -
+        .replace(/-+/g, "-") // collapse dashes
+        .replace(/^-+/, "") // trim - from start of text
+        .replace(/-+$/, ""); // trim - from end of text
+
+    return str;
 }
