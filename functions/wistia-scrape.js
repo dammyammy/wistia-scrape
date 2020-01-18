@@ -67,7 +67,7 @@ exports.handler = async (event, context) => {
 
         return {
             statusCode: 400,
-            body: JSON.stringify({ message: 'Link not defined' })
+            body: JSON.stringify({ error })
         }
     } finally {
         if (browser !== null) {

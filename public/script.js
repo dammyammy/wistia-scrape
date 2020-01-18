@@ -1,8 +1,10 @@
+autosize(document.getElementById('text'));
+
 document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
 
     e.preventDefault();
 
-    const text = document.getElementById('text').value;
+    const text = document.getElementById('text').value.trim();
 
     if (!text) return document.getElementById('result').textContent = 'Please enter Copied Link from Wistia';
 
