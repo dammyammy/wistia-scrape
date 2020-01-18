@@ -44,6 +44,13 @@ exports.handler = async (event, context) => {
 
         result = { ...video, url }
 
+        context.succeed(result);
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ ...video, url })
+        }
+
     } catch (error) {
         return context.fail(error);
     } finally {
@@ -52,12 +59,9 @@ exports.handler = async (event, context) => {
         }
     }
     
-    context.succeed(result);
+    
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify({ ...video, url })
-    }
+
 }
 
 
