@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
 
     // let link = extractWistiaURL(text);
 
-    let imgRegex = /<img[^>]+src="http([^">]+)/g;
+    const imgRegex = /<img[^>]+src="http([^">]+)/g;
     
     let video = {
       title: element.substring(element.lastIndexOf('">') + 1, element.lastIndexOf('</a></p>')).replace('>', ''),
@@ -20,10 +20,10 @@ exports.handler = async (event, context) => {
       embedUrl: "https://fast.wistia.net/embed/iframe/" +element.substring(element.indexOf('?wvideo=') + 1, element.indexOf('">')).replace('wvideo=', '')
     };
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify({ element, ...video })
-    }
+    // return {
+    //     statusCode: 200,
+    //     body: JSON.stringify({ element, ...video })
+    // }
 
 
 
