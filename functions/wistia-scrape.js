@@ -42,7 +42,18 @@ exports.handler = async (event, context) => {
         let url = (valueTxt.substring(valueTxt.indexOf('"url":"') + 1, valueTxt.indexOf('.bin"')) + '.mp4')
                 .replace('url":"', '');
 
-        result = { ...video, url, valueTxt }
+
+        if(url === '.mp4') {
+            const value2 = await el2.getProperty('textContent');
+
+            let valueTxt2 = await value2.jsonValue();
+
+            url = (valueTxt2.substring(valueTxt2.indexOf('"url":"') + 1, valueTxt2.indexOf('.bin"')) + '.mp4')
+                .replace('url":"', '');
+        }
+
+
+        result = { ...video, url }
 
         // context.succeed(result);
 
