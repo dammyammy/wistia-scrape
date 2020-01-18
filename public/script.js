@@ -27,7 +27,9 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
 
 
             let card = `<div class="card" id="wistia-video-${key}">
+
                 <div class="card-image">
+                    <span>#${key}</span>
                     <img src="${res.image}" alt="${res.title}" width="200">
                 </div>
                 <div class="card-body">
