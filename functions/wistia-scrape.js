@@ -22,7 +22,7 @@ exports.handler = async (event, context) => {
 
     return {
         statusCode: 200,
-        body: JSON.stringify({ ...element, ...video })
+        body: JSON.stringify({ element, ...video })
     }
 
 
