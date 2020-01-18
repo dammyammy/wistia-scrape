@@ -81,7 +81,11 @@ function copyEmbed(url) {
 
 async function saveURLFile(url, filename, mimeType, bom) {
 
-    let blob = await urlToBlob(url, mimeType, bom);
+    // let blob = await urlToBlob(url, mimeType, bom);
+
+    let blob = window.URL.createObjectURL(
+        new Blob([url], { type: mimeType })
+    )
 
     if (typeof window.navigator.msSaveBlob !== 'undefined') {
         // IE workaround for "HTML7007: One or more blob URLs were
@@ -92,6 +96,7 @@ async function saveURLFile(url, filename, mimeType, bom) {
     }
     else {
         let blobURL = window.URL.createObjectURL(blob);
+
         let tempLink = document.createElement('a');
         tempLink.style.display = 'none';
         tempLink.href = blobURL;
