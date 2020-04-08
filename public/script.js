@@ -1,4 +1,6 @@
-autosize(document.getElementById('text'));
+let textElement = document.getElementById('text')
+
+autosize(textElement);
 
 let key = 1;
 
@@ -6,7 +8,7 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
 
     e.preventDefault();
 
-    const text = document.getElementById('text').value.trim();
+    const text = textElement.value.trim();
 
     if (!text) return document.getElementById('result').textContent = 'Please enter Copied Link from Wistia';
 
@@ -22,10 +24,6 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
     fetch("/.netlify/functions/wistia-scrape", options)
         .then((res) => res.json())
         .then((res) => {
-
-            console.log(res)
-
-
             let card = `<div class="card" id="wistia-video-${key}">
 
                 <div class="card-image">
@@ -36,7 +34,7 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
                     <p>${res.title}</p>
                     <div class="card-buttons">
                         <a target="_blank" type="button" href="${res.url}">Download</button>
-                        <button type="button" data-url="${res.embedUrl}">Copy Embed</button>
+                        <button class="link" type="button" data-url="${res.embedUrl}">Copy Embed</button>
                     </div>
                 </div>
             </div>`;
@@ -47,6 +45,8 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
             document.getElementById('result').insertAdjacentHTML('beforeend', card);
 
             let buttons = document.querySelectorAll('#wistia-video-' +key + ' button');
+
+            textElement.innerText = '';
 
             // buttons[0].addEventListener('click', () => downloadVideo(res.url, res.title))
             buttons[0].addEventListener('click', () => copyEmbed(res.embedUrl))
