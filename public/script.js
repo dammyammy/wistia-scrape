@@ -33,7 +33,9 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
                 <div class="card-body">
                     <p>${res.title}</p>
                     <div class="card-buttons">
+
                         <a target="_blank" type="button" href="${res.url}">Download</button>
+                        <button class="link" type="button" data-url="${res.url}">Copy</button>
                         <button class="link" type="button" data-url="${res.embedUrl}">Copy Embed</button>
                     </div>
                 </div>
@@ -46,10 +48,10 @@ document.querySelector('button[type="submit"]').addEventListener('click', (e) =>
 
             let buttons = document.querySelectorAll('#wistia-video-' +key + ' button');
 
-            textElement.innerText = '';
+            textElement.value = '';
 
-            // buttons[0].addEventListener('click', () => downloadVideo(res.url, res.title))
-            buttons[0].addEventListener('click', () => copyEmbed(res.embedUrl))
+            buttons[0].addEventListener('click', () => copyEmbed(res.url))
+            buttons[1].addEventListener('click', () => copyEmbed(res.embedUrl))
 
             key++
         })

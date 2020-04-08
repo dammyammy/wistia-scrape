@@ -56,6 +56,7 @@ button {
 
 button.link {
     font-size: 14px;
+    font-weight: 300;
     background-color: transparent;
     color: hsla(230,84%,63%,1);
     border: 0;
